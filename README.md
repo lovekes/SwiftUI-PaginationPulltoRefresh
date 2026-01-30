@@ -44,12 +44,6 @@ Responsibilities:
 * Fetch next page
 * Refresh data
 
-Key properties:
-
-* `items: [Item]`
-* `isLoading: Bool`
-* `hasMorePages: Bool`
-* `currentPage: Int`
 
 ---
 
