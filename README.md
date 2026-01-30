@@ -1,30 +1,131 @@
-# SwiftUI-Assignment
-UI designed with SwiftUI, API integrated with Combine, local database used SwiftData, Local search history managed via UserDefaults, Location displayed in AppleMap
+# SwiftUI Pagination & Pull-to-Refresh
 
+A clean and reusable SwiftUI implementation for **pagination (infinite scrolling)** and **pull-to-refresh**, built with modern Swift concurrency (`async/await`). Ideal for lists backed by remote APIs.
 
-<img width="270" height="584" alt="Simulator Screenshot - iPhone 16e - 2026-01-25 at 14 34 56" src="https://github.com/user-attachments/assets/5bc9c76f-2f63-460f-b26d-7c4de95e20af" />
-<img width="270" height="584" alt="Simulator Screenshot - iPhone 16e - 2026-01-25 at 14 34 39" src="https://github.com/user-attachments/assets/6ff624a4-aeb2-4da5-915f-f2fb6d0bbb70" />
-<img width="270" height="584" alt="Simulator Screenshot - iPhone 16e - 2026-01-25 at 14 34 43" src="https://github.com/user-attachments/assets/0289a47d-87bd-4aaa-bbbc-ba74c32eb3c3" />
+---
 
+## ✨ Features
 
-GeoPlaces Tracker 📍
-A modern iOS 19 application built with SwiftUI, SwiftData, and MapKit that fetches geographical data from the GeoDB API and persists it locally for offline access.
+* 🔄 Pull-to-refresh using `.refreshable`
+* 📜 Infinite scrolling (pagination)
+* ⚡ Async/Await based networking
+* 🧠 MVVM architecture
+* 🛑 Prevents duplicate API calls
+* 🧪 Easy to test and extend
 
-🚀 Features
-Real-time API Integration: Utilizes a custom APIRouter with Swift Concurrency (async/await/Combine) to fetch global city data.
-SwiftData Persistence: Local storage using the latest @Model macros with automatic schema migration.
-Interactive Mapping: Displays saved locations on Apple Maps using the native MapKit integration for SwiftUI.
-Modern Networking: Type-safe URL construction via URLComponents for robust API communication.
+---
 
-🛠 Tech Stack
-Framework: SwiftUI (iOS 17+)
-Database: SwiftData
-Networking: URLSession & Codable
-Map Engine: MapKit
-Language: Swift 6 (Strict Concurrency Enabled)
+## 🛠 Requirements
 
-🏗 Project Structure
-Models/: Contains the @Model definitions (e.g., GEOPlacesLocalData.swift) and API DTOs (GEOPlacesData.swift).
-Networking/: The APIRouter instance class managing endpoint logic.
-ViewModels/: @MainActor driven logic for bridging the API and SwiftData context.
-Views/: SwiftUI views and MapKit implementation.
+* iOS 15+
+* Xcode 14+
+* Swift 5.7+
+
+---
+
+## 📐 Architecture
+
+The project follows **MVVM**:
+
+* **View** → SwiftUI `List`
+* **ViewModel** → Handles pagination & refresh logic
+* **Service** → API / data source layer
+
+---
+
+## 🚀 Usage
+
+### 1️⃣ ViewModel
+
+Responsibilities:
+
+* Track current page
+* Handle loading states
+* Fetch next page
+* Refresh data
+
+Key properties:
+
+* `items: [Item]`
+* `isLoading: Bool`
+* `hasMorePages: Bool`
+* `currentPage: Int`
+
+---
+
+### 2️⃣ SwiftUI View
+
+* Uses `List` for displaying data
+* Triggers pagination when the last cell appears
+* Uses `.refreshable` for pull-to-refresh
+
+**Pagination trigger:**
+
+* Detect last item using `onAppear`
+
+**Pull-to-refresh:**
+
+* Calls refresh method on ViewModel
+
+---
+
+## 🔄 Pull-to-Refresh Flow
+
+1. User pulls down the list
+2. `.refreshable` is triggered
+3. Page resets to `1`
+4. Existing data is cleared
+5. Fresh data is loaded
+
+---
+
+## 📜 Pagination Flow
+
+1. User scrolls to bottom
+2. Last row appears
+3. Next page API is called
+4. New data is appended
+5. Stops when no more pages
+
+---
+
+## 🧠 Best Practices Used
+
+* Avoids multiple simultaneous API calls
+* Handles empty and error states
+* Keeps UI responsive with `@MainActor`
+* Clean separation of concerns
+
+---
+
+## 📦 Example Use Cases
+
+* Social feeds
+* Product listings
+* Search results
+* Activity logs
+
+---
+
+## 🧪 Possible Enhancements
+
+* Add loading shimmer
+* Add retry on failure
+* Integrate Combine
+* Add unit tests
+
+---
+
+## 📄 License
+
+This project is open-source and free to use for personal or commercial projects.
+
+---
+
+## 🙌 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you’d like to change.
+
+---
+
+Happy coding 🚀
